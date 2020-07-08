@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Noto Sans JP';
+    background: #fafafc; 
+    color: #332c49; 
+}
+
+.main {
+    width: 100vw;
+    height: 100vh;
+    padding: 60px; 
+    box-sizing: border-box;
+}
+
+.title h1 {
+    margin: 0;
+    font-weight: 500;
+    font-size: 34px;
+}
+
+.content {
+    margin-top: 40px; 
+    display: flex;
+    justify-content: space-between;
+}
+
+.objectives {
+    width: 30%; 
+}
+
+.objectives h2 {
+    margin: 0; 
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.add-habit {
+    background-color: #fff;
+    border-radius: 10px;
+    margin-right: 40px; 
+    padding: 20px; 
+    margin-top: 20px; 
+    box-sizing: border-box;
+}
+
+.add-habit_form {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.add-habit_input {
+    flex-grow: 1;  
+    height: 20px; 
+    border: none; 
+    font-family: 'Noto Sans JP';
+}
+
+.add-habit_input:focus {
+    outline: none; 
+}
+
+.add-habit_btn {
+    background-color: #f8d57e; 
+    color: #fff;
+    border: none; 
+    font-weight: 600; 
+    border-radius: 10px; 
+    padding: 5px 10px; 
+    cursor: pointer;
+    outline: none;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    width: 46px;
+    height: 50px;
+}
+
+.tracker {
+    flex-grow: 1; 
+}
+
+.tracker table {
+    background-color: #fff; 
+    border-radius: 10px;
+    width: 100%; 
+    padding: 10px; 
+}
+
+td {
+    text-align: center; 
+    height: 90px; 
+    border: 1px solid #fafafc; 
+    cursor: pointer;
+    vertical-align: top;
+}
+
+.day {
+    padding: 5px 10px; 
+}
+
+.day-highlight {
+    background-color: #f8d57e;
+    border-radius: 50%;  
+    color: #fff; 
+}
