@@ -14,14 +14,22 @@
                 <h1>30 day challenge</h1>
             </section>
             <section class="content">
-                <div class="objectives">
-                    <h2>your habits</h2>
-                    <div class="add-habit">
-                        <span class="add-habit_title">add a new habit to track</span>
-                        <div class="add-habit_form">
-                            <input type="text" class="add-habit_input" autofocus/>
-                            <button class="add-habit_btn">add</button>
+                <div class="left-menu">
+                    <div class="objectives">
+                        <h2>your habits</h2>
+                        <div class="add-habit">
+                            <span class="add-habit_title">add a new habit to track</span>
+                            <div class="add-habit_form">
+                                <input type="text" class="add-habit_input" id="addHabitInput" autofocus/>
+                                <button class="add-habit_btn" id="addInputBtn">add</button>
+                            </div>
                         </div>
+                    </div>
+                    <div class="habits" id="habitsDiv">
+            
+                    </div>
+                    <div class="bottom">
+                        <button class="restart-btn" id="restartBtn"><i class="fas fa-undo-alt"></i> restart challenge</button>
                     </div>
                 </div>
                 <div class="tracker">
