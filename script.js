@@ -5,7 +5,6 @@ const restartBtn = document.getElementById('restartBtn');
 const addHabitInput = document.getElementById('addHabitInput');
 const addInputBtn = document.getElementById('addInputBtn');
 const tooltipTxt = document.getElementById('tooltipTxt');
-const btnsRemoveHabit = document.getElementsByClassName("remove-habit");
 
 // date variables 
 
@@ -84,6 +83,12 @@ function renderHabit() {
                 </div>`; 
     }
     document.getElementById('habitsDiv').innerHTML = str;
+    let btnsRemoveHabit = document.getElementsByClassName("remove-habit");
+    for (let i=0; i < btnsRemoveHabit.length; i++) {
+        btnsRemoveHabit[i].addEventListener('click', function() {
+            deleteHabitData(i); 
+        }); 
+    }
 }
 
 // function to load initial data stored in local storage
@@ -98,13 +103,10 @@ function loadInitialData() {
 // function to remove habit from display and local storage 
 
 function deleteHabitData(element) {
-    console.log('it works ' + element); 
-}
-
-for (let i=0; i < btnsRemoveHabit.length; i++) {
-    btnsRemoveHabit[i].addEventListener('click', function() {
-        deleteHabitData(i); 
-    }); 
+    userInput.splice(element, 1); 
+    localStorage.removeItem('userInput');
+    localStorage.setItem('userInput', JSON.stringify(userInput));
+    renderHabit(); 
 }
 
 // call functions and event listeners 
