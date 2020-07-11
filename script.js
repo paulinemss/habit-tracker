@@ -4,6 +4,8 @@ const days = document.getElementsByClassName("day");
 const restartBtn = document.getElementById('restartBtn'); 
 const addHabitInput = document.getElementById('addHabitInput');
 const addInputBtn = document.getElementById('addInputBtn');
+const tooltipTxt = document.getElementById('tooltipTxt');
+const btnsRemoveHabit = document.getElementsByClassName("remove-habit");
 
 // date variables 
 
@@ -55,11 +57,14 @@ function restartChallenge() {
 // function to add input from the form into a habit element
 
 function addInput() {
-    if (addHabitInput.value !== '') {
+    if (userInput.length > 3) {
+        tooltipTxt.style.visibility = 'visible'; 
+        setTimeout(function(){ tooltipTxt.style.visibility = 'hidden'; }, 4000);
+    } else if (addHabitInput.value !== '') {
         userInput.unshift(addHabitInput.value); 
         renderHabit(); 
         localStorage.setItem('userInput', JSON.stringify(userInput));
-    }
+    };
     addHabitInput.value = ''; 
 }
 
@@ -67,11 +72,13 @@ function addInput() {
 
 function renderHabit() {
     let str = '';
-    for (let i=0; i<userInput.length; i++) {
+    let arrayIcons = ['<i class="fas fa-cat"></i>', '<i class="fas fa-hippo"></i>', '<i class="fas fa-frog"></i>', '<i class="fas fa-dove"></i>'];
+    for (let i=0; i < userInput.length; i++) {
         let habit = userInput[i];
         str += `<div class="user-habit">
                     <div class="checkbox">
-                        <button><i class="far fa-check-square"></i></button>
+                        <button class="remove-habit"><i class="fas fa-times"></i></button>
+                        <button class="checkbtn button${i}">${arrayIcons[i]}</button>
                     </div>
                     <div class="habit-description">${habit}</div>
                 </div>`; 
@@ -79,8 +86,30 @@ function renderHabit() {
     document.getElementById('habitsDiv').innerHTML = str;
 }
 
+// function to load initial data stored in local storage
+
+function loadInitialData() {
+    if (localStorage.getItem('userInput')) {
+        userInput = JSON.parse(localStorage.getItem('userInput')); 
+        renderHabit(); 
+    };
+}
+
+// function to remove habit from display and local storage 
+
+function deleteHabitData(element) {
+    console.log('it works ' + element); 
+}
+
+for (let i=0; i < btnsRemoveHabit.length; i++) {
+    btnsRemoveHabit[i].addEventListener('click', function() {
+        deleteHabitData(i); 
+    }); 
+}
+
 // call functions and event listeners 
 
 highlightDate(); 
+loadInitialData(); 
 restartBtn.addEventListener('click', restartChallenge); 
 addInputBtn.addEventListener('click', addInput); 

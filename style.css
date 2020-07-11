@@ -48,7 +48,7 @@ body {
 .add-habit_form {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
 }
 
 .add-habit_input {
@@ -76,6 +76,30 @@ body {
     height: 50px;
 }
 
+.tooltip {
+    position: absolute; 
+    background: #AFB1B3; 
+    color: #fff; 
+    font-size: 12px;
+    width: 120px; 
+    margin-left: 10px; 
+    text-align: center;
+    border-radius: 5px; 
+    padding: 5px; 
+    visibility: hidden; 
+}
+
+.tooltip::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #AFB1B3 transparent transparent;
+}
+
 .restart-btn {
     background-color: #eceff2;
     font-weight: 600; 
@@ -92,8 +116,9 @@ body {
 }
 
 .habits {
-    margin-top: 10px; 
-    margin-left: 40px; 
+    margin-top: 30px; 
+    margin-left: 20px; 
+    margin-bottom: 10px; 
 }
 
 .user-habit {
@@ -102,12 +127,54 @@ body {
     margin-top: 10px; 
 }
 
-.checkbox button {
+.checkbox {
+    display: flex; 
+}
+
+.remove-habit {
+    font-size: 12px; 
+    cursor: pointer;
+    color: #D4D7D9;
     background: none;
+    border: none; 
+    outline: none;
+    align-self: flex-start; 
+    margin-right: 5px; 
+    visibility: hidden;
+}
+
+.user-habit:hover .remove-habit {
+    visibility: visible;
+}
+
+.checkbtn {
     cursor: pointer;
     border: none; 
     font-size: 18px; 
     outline: none; 
+    padding: 5px 10px; 
+    border-radius: 5px; 
+    width: 40px; 
+}
+
+.button0 {
+    background-color: rgba(0, 214, 255, 0.2);
+    color: #00D6FF; 
+}
+
+.button1 {
+    background-color: rgba(255, 135, 185, 0.2);
+    color: #FF87B9; 
+}
+
+.button2{
+    background-color: rgba(87, 190, 98, 0.2); 
+    color: #57BE62; 
+}
+
+.button3 {
+    background-color: rgba(254, 139, 56, 0.2); 
+    color: #FE8B38; 
 }
 
 .habit-description {
