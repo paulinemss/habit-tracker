@@ -146,8 +146,15 @@ function deleteHabitData(element) {
 function habitToCalendar(element) {
     element += 1; 
     if (addHabitCalendar.style.display === 'none') {
+        let str = []; 
         addHabitCalendar.style.display = 'block'; 
-        addHabitCalendar.innerHTML = `select habit for day ${element}:`; 
+        for (let i=0; i < userInput.length; i++) {
+            let iconName = userInput[i].icon; 
+            str.push(iconElements[iconName]);
+        }
+        str.join(' '); 
+        console.log(str); 
+        addHabitCalendar.innerHTML = `select habit for day ${element}: ${str}`; 
     } else {
         addHabitCalendar.style.display = 'none'; 
     }
