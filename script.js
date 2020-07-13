@@ -5,6 +5,7 @@ const restartBtn = document.getElementById('restartBtn');
 const addHabitInput = document.getElementById('addHabitInput');
 const addInputBtn = document.getElementById('addInputBtn');
 const tooltipTxt = document.getElementById('tooltipTxt');
+const addHabitCalendar = document.getElementById('addHabitCalendar'); 
 
 // date variables 
 
@@ -17,6 +18,15 @@ console.log('firstCo : ' + firstCo);
 // user data array
 
 let userInput = []; 
+
+// icons elements object
+
+const iconElements = {
+    cat: '<button class="checkbtn button0"><i class="fas fa-cat"></i></button>',
+    hippo: '<button class="checkbtn button1"><i class="fas fa-hippo"></i></button>',
+    frog: '<button class="checkbtn button2"><i class="fas fa-frog"></i></button>',
+    dove: '<button class="checkbtn button3"><i class="fas fa-dove"></i></button>'
+}
 
 // function to check the difference between first connection & current date
 
@@ -53,6 +63,22 @@ function restartChallenge() {
     location.reload();
 }
 
+// function to assign a color to the user input object 
+
+function findNewColor() {
+    const iconObjectNames = ['cat', 'hippo', 'frog', 'dove'];
+
+    for (let i=0; i < userInput.length; i++) {
+        for (let j=0; j < iconObjectNames.length; j++) {
+            if (userInput[i].icon === iconObjectNames[j]) {
+                iconObjectNames.splice(j, 1); 
+            }
+        }
+    }
+
+    return iconObjectNames[0];
+}
+
 // function to add input from the form into a habit element
 
 function addInput() {
@@ -60,10 +86,14 @@ function addInput() {
         tooltipTxt.style.visibility = 'visible'; 
         setTimeout(function(){ tooltipTxt.style.visibility = 'hidden'; }, 4000);
     } else if (addHabitInput.value !== '') {
-        userInput.unshift(addHabitInput.value); 
+        userInput.unshift({
+            name: addHabitInput.value,
+            icon: findNewColor()
+        }); 
         renderHabit(); 
         localStorage.setItem('userInput', JSON.stringify(userInput));
     };
+
     addHabitInput.value = ''; 
 }
 
@@ -71,18 +101,20 @@ function addInput() {
 
 function renderHabit() {
     let str = '';
-    let arrayIcons = ['<i class="fas fa-cat"></i>', '<i class="fas fa-hippo"></i>', '<i class="fas fa-frog"></i>', '<i class="fas fa-dove"></i>'];
+
     for (let i=0; i < userInput.length; i++) {
-        let habit = userInput[i];
+        let habit = userInput[i].name;
+        let iconName = userInput[i].icon; 
         str += `<div class="user-habit">
                     <div class="checkbox">
                         <button class="remove-habit"><i class="fas fa-times"></i></button>
-                        <button class="checkbtn button${i}">${arrayIcons[i]}</button>
+                        ${iconElements[iconName]}
                     </div>
                     <div class="habit-description">${habit}</div>
                 </div>`; 
     }
     document.getElementById('habitsDiv').innerHTML = str;
+
     let btnsRemoveHabit = document.getElementsByClassName("remove-habit");
     for (let i=0; i < btnsRemoveHabit.length; i++) {
         btnsRemoveHabit[i].addEventListener('click', function() {
@@ -107,6 +139,24 @@ function deleteHabitData(element) {
     localStorage.removeItem('userInput');
     localStorage.setItem('userInput', JSON.stringify(userInput));
     renderHabit(); 
+}
+
+// function to make the menu to add habit to calendar appear 
+
+function habitToCalendar(element) {
+    element += 1; 
+    if (addHabitCalendar.style.display === 'none') {
+        addHabitCalendar.style.display = 'block'; 
+        addHabitCalendar.innerHTML = `select habit for day ${element}:`; 
+    } else {
+        addHabitCalendar.style.display = 'none'; 
+    }
+}
+
+for (let i=0; i < days.length; i++) {
+    days[i].addEventListener('click', function() {
+        habitToCalendar(i); 
+    });  
 }
 
 // call functions and event listeners 

@@ -148,7 +148,6 @@ body {
 }
 
 .checkbtn {
-    cursor: pointer;
     border: none; 
     font-size: 18px; 
     outline: none; 
@@ -181,6 +180,14 @@ body {
     margin-left: 10px; 
 }
 
+.add-habit-calendar { 
+    position: absolute; 
+    top: 70px; 
+    background: #fff; 
+    border-radius: 10px;
+    padding: 20px; 
+}
+
 .tracker {
     flex-grow: 1; 
 }
@@ -196,12 +203,15 @@ td {
     text-align: center; 
     height: 90px; 
     border: 1px solid #fafafc; 
-    cursor: pointer;
     vertical-align: top;
 }
 
 .day {
     padding: 5px 10px; 
+    background: none;
+    border: none; 
+    cursor: pointer;
+    font-family: 'Noto Sans JP';
 }
 
 .day-highlight {
