@@ -204,11 +204,18 @@ body {
     padding: 10px; 
 }
 
+tr {
+    display: flex; 
+}
+
 td {
     text-align: center; 
+    width: 100%; 
     height: 90px; 
     border: 1px solid #fafafc; 
     vertical-align: top;
+    display: flex; 
+    flex-direction: column;
 }
 
 .day {
@@ -218,10 +225,47 @@ td {
     cursor: pointer;
     font-family: 'Noto Sans JP';
     outline: none;
+    width: 30px; 
+    height: 30px; 
+    align-self: center; 
 }
 
 .day-highlight {
     background-color: #f8d57e;
     border-radius: 50%;  
     color: #fff; 
+}
+
+.colorHabit {
+    margin-top: 5px; 
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column;
+}
+
+.main-habit {
+    width: 100%;
+    box-sizing: border-box;
+    flex-grow: 1; 
+    border-radius: 3px;
+}
+
+.orange-habit {
+    border: 1px solid #FE8B38;
+    background-color: rgba(254, 139, 56, 0.2);
+}
+
+.green-habit {
+    border: 1px solid #57BE62; 
+    background-color: rgba(87, 190, 98, 0.2); 
+}
+
+.pink-habit {
+    border: 1px solid #FF87B9; 
+    background-color: rgba(255, 135, 185, 0.2);
+}
+
+.blue-habit {
+    border: 1px solid #00D6FF; 
+    background-color: rgba(0, 214, 255, 0.2);
 }

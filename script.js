@@ -6,7 +6,7 @@ const addHabitInput = document.getElementById('addHabitInput');
 const addInputBtn = document.getElementById('addInputBtn');
 const tooltipTxt = document.getElementById('tooltipTxt');
 const addHabitCalendar = document.getElementById('addHabitCalendar'); 
-const selectHabitBtns = document.getElementsByClassName('select-habit');
+const colorHabitDivs = document.getElementsByClassName('colorHabit'); 
 
 // date variables 
 
@@ -145,20 +145,58 @@ function habitToCalendar(element) {
     if (days[element].classList.contains('day-highlight')) {
         addHabitCalendar.innerHTML = `select habit(s) you accomplished today: ${str}`; 
     } else {
-        element += 1; 
-        addHabitCalendar.innerHTML = `select habit(s) you accomplished on day ${element}: ${str}`;
+        let actualDay = element + 1; 
+        addHabitCalendar.innerHTML = `select habit(s) you accomplished on day ${actualDay}: ${str}`;
     }
 
-    let myButtons = document.getElementById('addHabitCalendar').getElementsByClassName('checkbtn'); 
-    for (let j=0; j < myButtons.length; j++) {
-        myButtons[j].classList.add('select-habit'); 
-    }
+    createHabitButton(element); 
 }
 
 for (let i=0; i < days.length; i++) {
     days[i].addEventListener('click', function() {
         habitToCalendar(i); 
     });  
+}
+
+// function to create buttons on habits above the calendar 
+
+function createHabitButton(element) {
+    const myButtons = document.getElementById('addHabitCalendar').getElementsByClassName('checkbtn'); 
+    for (let i=0; i < myButtons.length; i++) {
+        myButtons[i].classList.add('select-habit'); 
+        myButtons[i].addEventListener('click', function() {
+            habitAccomplished(i, element); 
+        }); 
+    }
+}
+
+function habitAccomplished(indexHabit, indexDate) {
+    console.log(indexHabit, indexDate); 
+    console.log(userInput[indexHabit].icon); 
+    console.log(userInput.length); 
+
+    colorHabitDivs[indexDate].innerHTML = '';  
+
+    for (let i=0; i < userInput.length; i++) {
+        let div = document.createElement('div'); 
+        colorHabitDivs[indexDate].appendChild(div);
+    }
+
+    const divsToColor = colorHabitDivs[indexDate].getElementsByTagName("div"); 
+
+    for (let j=0; j < divsToColor.length; j++) {
+        divsToColor[j].classList.add('main-habit'); 
+    }
+    
+    if (userInput[indexHabit].icon === 'dove') {
+        divsToColor[indexHabit].classList.add('orange-habit'); 
+    } else if (userInput[indexHabit].icon === 'frog') {
+        divsToColor[indexHabit].classList.add('green-habit'); 
+    } else if (userInput[indexHabit].icon === 'hippo') {
+        divsToColor[indexHabit].classList.add('pink-habit'); 
+    } else if (userInput[indexHabit].icon === 'cat') {
+        divsToColor[indexHabit].classList.add('blue-habit'); 
+    }
 }
 
 // function to highlight current date 
