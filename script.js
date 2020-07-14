@@ -1,11 +1,12 @@
 // HTML elements variables 
 
-const days = document.getElementsByClassName("day");
+const days = document.getElementsByClassName('day');
 const restartBtn = document.getElementById('restartBtn'); 
 const addHabitInput = document.getElementById('addHabitInput');
 const addInputBtn = document.getElementById('addInputBtn');
 const tooltipTxt = document.getElementById('tooltipTxt');
 const addHabitCalendar = document.getElementById('addHabitCalendar'); 
+const selectHabitBtns = document.getElementsByClassName('select-habit');
 
 // date variables 
 
@@ -36,24 +37,6 @@ function dateDiffInDays(a, b) {
     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
     return Math.floor((utc2 - utc1) / _MS_PER_DAY);
-}
-
-// function to highlight current date 
-
-function highlightDate() {
-    if (!firstCo) {
-        localStorage.setItem('firstCo', now);
-        days[0].classList.add('day-highlight');
-    } else {
-        const difference = dateDiffInDays(new Date(firstCo), now);
-        console.log('difference is', difference)
-        if (difference < 30) {
-            days[difference].classList.add('day-highlight'); 
-        } else {
-            localStorage.clear();
-            highlightDate(); 
-        }
-    }
 }
 
 // function to reload the page and empty local storage
@@ -91,6 +74,7 @@ function addInput() {
             icon: findNewColor()
         }); 
         renderHabit(); 
+        highlightDate(); 
         localStorage.setItem('userInput', JSON.stringify(userInput));
     };
 
@@ -139,24 +123,35 @@ function deleteHabitData(element) {
     localStorage.removeItem('userInput');
     localStorage.setItem('userInput', JSON.stringify(userInput));
     renderHabit(); 
+    highlightDate(); 
 }
 
 // function to make the menu to add habit to calendar appear 
 
 function habitToCalendar(element) {
-    element += 1; 
-    if (addHabitCalendar.style.display === 'none') {
-        let str = []; 
-        addHabitCalendar.style.display = 'block'; 
-        for (let i=0; i < userInput.length; i++) {
-            let iconName = userInput[i].icon; 
-            str.push(iconElements[iconName]);
-        }
-        str.join(' '); 
-        console.log(str); 
-        addHabitCalendar.innerHTML = `select habit for day ${element}: ${str}`; 
-    } else {
+    if (userInput.length === 0) {
         addHabitCalendar.style.display = 'none'; 
+    } else {
+        addHabitCalendar.style.display = 'block'; 
+    }
+
+    let str = []; 
+    for (let i=0; i < userInput.length; i++) {
+        let iconName = userInput[i].icon; 
+        str.push(iconElements[iconName]);
+    }
+    str = str.join(' ');  
+
+    if (days[element].classList.contains('day-highlight')) {
+        addHabitCalendar.innerHTML = `select habit(s) you accomplished today: ${str}`; 
+    } else {
+        element += 1; 
+        addHabitCalendar.innerHTML = `select habit(s) you accomplished on day ${element}: ${str}`;
+    }
+
+    let myButtons = document.getElementById('addHabitCalendar').getElementsByClassName('checkbtn'); 
+    for (let j=0; j < myButtons.length; j++) {
+        myButtons[j].classList.add('select-habit'); 
     }
 }
 
@@ -166,9 +161,29 @@ for (let i=0; i < days.length; i++) {
     });  
 }
 
+// function to highlight current date 
+
+function highlightDate() {
+    if (!firstCo) {
+        localStorage.setItem('firstCo', now);
+        days[0].classList.add('day-highlight');
+        habitToCalendar(0); 
+    } else {
+        const difference = dateDiffInDays(new Date(firstCo), now);
+        console.log('difference is', difference)
+        if (difference < 30) {
+            days[difference].classList.add('day-highlight'); 
+            habitToCalendar(difference); 
+        } else {
+            localStorage.clear();
+            highlightDate(); 
+        }
+    }
+}
+
 // call functions and event listeners 
 
-highlightDate(); 
 loadInitialData(); 
+highlightDate(); 
 restartBtn.addEventListener('click', restartChallenge); 
 addInputBtn.addEventListener('click', addInput); 
