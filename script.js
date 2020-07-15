@@ -16,9 +16,10 @@ const firstCo = localStorage.getItem('firstCo');
 console.log('now : ' + now);
 console.log('firstCo : ' + firstCo);
 
-// user data array
+// user data array and habit data object
 
 let userInput = []; 
+let habitInput = {}; 
 
 // icons elements object
 
@@ -114,6 +115,15 @@ function loadInitialData() {
         userInput = JSON.parse(localStorage.getItem('userInput')); 
         renderHabit(); 
     };
+    if (localStorage.getItem('habitInput')) {
+        const loadedHabits = JSON.parse(localStorage.getItem('habitInput'));
+
+        for (const property in loadedHabits) {
+            for (let i=0; i < loadedHabits[property].length; i++) {
+                habitAccomplished(loadedHabits[property][i], property); 
+            }
+        }
+    }
 }
 
 // function to remove habit from display and local storage 
@@ -170,11 +180,9 @@ function createHabitButton(element) {
     }
 }
 
-function habitAccomplished(indexHabit, indexDate) {
-    console.log(indexHabit, indexDate); 
-    console.log(userInput[indexHabit].icon); 
-    console.log(userInput.length); 
+// function to add accomplished habit to calendar
 
+function habitAccomplished(indexHabit, indexDate) {
     colorHabitDivs[indexDate].innerHTML = '';  
 
     for (let i=0; i < userInput.length; i++) {
@@ -182,21 +190,39 @@ function habitAccomplished(indexHabit, indexDate) {
         colorHabitDivs[indexDate].appendChild(div);
     }
 
+    if (!habitInput[indexDate]) {
+        habitInput[indexDate] = []; 
+        habitInput[indexDate].unshift(indexHabit); 
+    } else {
+        habitInput[indexDate].unshift(indexHabit); 
+    }
+
+    localStorage.setItem('habitInput', JSON.stringify(habitInput));
+
+    for (const property in habitInput) {
+        colorDivInCalendar(property, habitInput[property]); 
+    }
+}
+
+function colorDivInCalendar(indexDate, indexHabit) {
+    console.log('trying to color div in calendar with arguments', indexDate, indexHabit);
     const divsToColor = colorHabitDivs[indexDate].getElementsByTagName("div"); 
 
-    for (let j=0; j < divsToColor.length; j++) {
-        divsToColor[j].classList.add('main-habit'); 
+    for (let i=0; i < divsToColor.length; i++) {
+        divsToColor[i].classList.add('main-habit'); 
     }
-    
-    if (userInput[indexHabit].icon === 'dove') {
-        divsToColor[indexHabit].classList.add('orange-habit'); 
-    } else if (userInput[indexHabit].icon === 'frog') {
-        divsToColor[indexHabit].classList.add('green-habit'); 
-    } else if (userInput[indexHabit].icon === 'hippo') {
-        divsToColor[indexHabit].classList.add('pink-habit'); 
-    } else if (userInput[indexHabit].icon === 'cat') {
-        divsToColor[indexHabit].classList.add('blue-habit'); 
-    }
+
+    for (let j=0; j < indexHabit.length; j++) {
+        if (userInput[indexHabit[j]].icon === 'dove') {
+            divsToColor[indexHabit[j]].classList.add('orange-habit'); 
+        } else if (userInput[indexHabit[j]].icon === 'frog') {
+            divsToColor[indexHabit[j]].classList.add('green-habit'); 
+        } else if (userInput[indexHabit[j]].icon === 'hippo') {
+            divsToColor[indexHabit[j]].classList.add('pink-habit'); 
+        } else if (userInput[indexHabit[j]].icon === 'cat') {
+            divsToColor[indexHabit[j]].classList.add('blue-habit'); 
+        }
+    }    
 }
 
 // function to highlight current date 
