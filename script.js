@@ -20,6 +20,7 @@ console.log('firstCo : ' + firstCo);
 
 let userInput = []; 
 let habitInput = {}; 
+let currentDay; 
 
 // icons elements object
 
@@ -152,10 +153,15 @@ function habitToCalendar(element) {
     }
     str = str.join(' ');  
 
+    for (let j=0; j < days.length; j++) {
+        days[j].classList.remove('selected-day'); 
+    }
+
     if (days[element].classList.contains('day-highlight')) {
         addHabitCalendar.innerHTML = `select habit(s) you accomplished today: ${str}`; 
     } else {
         let actualDay = element + 1; 
+        days[element].classList.add('selected-day'); 
         addHabitCalendar.innerHTML = `select habit(s) you accomplished on day ${actualDay}: ${str}`;
     }
 
@@ -165,6 +171,7 @@ function habitToCalendar(element) {
 for (let i=0; i < days.length; i++) {
     days[i].addEventListener('click', function() {
         habitToCalendar(i); 
+        checkAccomplishedHabits(i); 
     });  
 }
 
@@ -176,7 +183,22 @@ function createHabitButton(element) {
         myButtons[i].classList.add('select-habit'); 
         myButtons[i].addEventListener('click', function() {
             habitAccomplished(i, element); 
+            checkAccomplishedHabits(element); 
         }); 
+    }
+}
+
+// function to check off accomplished habits on buttons above the calendar
+
+function checkAccomplishedHabits(date) {
+    for (const property in habitInput) { 
+        if (property == date && habitInput[property]) {
+            const myButtons = document.getElementById('addHabitCalendar').getElementsByClassName('checkbtn'); 
+            for (let i=0; i < habitInput[property].length; i++) {
+                let myIndex = habitInput[property][i]; 
+                myButtons[myIndex].classList.add('checked-habit'); 
+            }
+        } 
     }
 }
 
@@ -195,6 +217,17 @@ function habitAccomplished(indexHabit, indexDate) {
         habitInput[indexDate].unshift(indexHabit); 
     } else {
         habitInput[indexDate].unshift(indexHabit); 
+
+        // const myArray = habitInput[indexDate];
+        // const myArrayLength = myArray.length;  
+
+        // for (let l=0; l < myArrayLength; l++) {
+        //     if (myArray[l] == indexHabit) {
+        //         myArray.splice(l, 1); 
+        //     } else {
+        //         myArray.unshift(indexHabit); 
+        //     }
+        // }
     }
 
     localStorage.setItem('habitInput', JSON.stringify(habitInput));
@@ -205,7 +238,6 @@ function habitAccomplished(indexHabit, indexDate) {
 }
 
 function colorDivInCalendar(indexDate, indexHabit) {
-    console.log('trying to color div in calendar with arguments', indexDate, indexHabit);
     const divsToColor = colorHabitDivs[indexDate].getElementsByTagName("div"); 
 
     for (let i=0; i < divsToColor.length; i++) {
@@ -231,12 +263,13 @@ function highlightDate() {
     if (!firstCo) {
         localStorage.setItem('firstCo', now);
         days[0].classList.add('day-highlight');
+        currentDay = 0; 
         habitToCalendar(0); 
     } else {
         const difference = dateDiffInDays(new Date(firstCo), now);
-        console.log('difference is', difference)
         if (difference < 30) {
             days[difference].classList.add('day-highlight'); 
+            currentDay = difference; 
             habitToCalendar(difference); 
         } else {
             localStorage.clear();
@@ -249,5 +282,6 @@ function highlightDate() {
 
 loadInitialData(); 
 highlightDate(); 
+checkAccomplishedHabits(currentDay);
 restartBtn.addEventListener('click', restartChallenge); 
 addInputBtn.addEventListener('click', addInput); 
