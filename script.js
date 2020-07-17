@@ -198,7 +198,7 @@ function checkAccomplishedHabits(date) {
                 let myIndex = habitInput[property][i]; 
                 myButtons[myIndex].classList.add('checked-habit'); 
             }
-        } 
+        }
     }
 }
 
@@ -206,7 +206,7 @@ function checkAccomplishedHabits(date) {
 
 function habitAccomplished(indexHabit, indexDate) {
     colorHabitDivs[indexDate].innerHTML = '';  
-
+    
     for (let i=0; i < userInput.length; i++) {
         let div = document.createElement('div'); 
         colorHabitDivs[indexDate].appendChild(div);
@@ -216,18 +216,14 @@ function habitAccomplished(indexHabit, indexDate) {
         habitInput[indexDate] = []; 
         habitInput[indexDate].unshift(indexHabit); 
     } else {
-        habitInput[indexDate].unshift(indexHabit); 
-
-        // const myArray = habitInput[indexDate];
-        // const myArrayLength = myArray.length;  
-
-        // for (let l=0; l < myArrayLength; l++) {
-        //     if (myArray[l] == indexHabit) {
-        //         myArray.splice(l, 1); 
-        //     } else {
-        //         myArray.unshift(indexHabit); 
-        //     }
-        // }
+        const index = habitInput[indexDate].indexOf(indexHabit); 
+        if (index < 0) {
+            habitInput[indexDate].unshift(indexHabit); 
+        } else {
+            habitInput[indexDate].splice(index, 1);
+            const myButtons = document.getElementById('addHabitCalendar').getElementsByClassName('checkbtn'); 
+            myButtons[indexHabit].classList.remove('checked-habit'); 
+        }
     }
 
     localStorage.setItem('habitInput', JSON.stringify(habitInput));
